@@ -48,6 +48,39 @@ function initPage() {
                         uvIndex.innerHTML = data.current.uvi;
                         currentUV.innerhtml = "UV Index: ";
                         currentUV.append(uvIndex);
+                    });
+
+                let cityID = data.name;
+                let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityID + "&appid=" + apiKey;
+                fetch(forecastQueryURL)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        console.log(data)
+                        var forecastBlocks = document.querySelectorAll(".forecast");
+                        for (let i = 0; i < forecastBlocks.length; i++) {
+                            forecastBlocks[i].innerHTML = "";
+                            var forecastIndex = i * 8 + 4;
+                            var forecastDate = new Date(data.list[forecastIndex].dt * 1000);
+                            var forecastDay = forecastDate.getDate();
+                            var forecastMonth = forecastDate.getMonth() + 1;
+                            var forecastYear = forecastDate.getFullYear();
+                            var forecastDateElement = document.createElement("p");
+                            forecastDateElement.setAttribute("class", "mt-3 mb-0 forecast-date");
+                            forecastDateElement.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear;
+                            forecastBlocks[i].append(forecastDateElement);
+                            var forecastWeatherElement = document.createElement("img");
+                            forecastWeatherElement.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
+                            forecastWeatherElement.setAttribute("alt", data.list[forecastIndex].weather[0].description);
+                            forecastBlocks[i].append(forecastWeatherElement);
+                            var forecastTempElement = document.createElement("p");
+                            forecastTempElement.innerHTML = "Temp: " + tempFix(data.list[forecastIndex].main.temp) + " &#176F";
+                            forecastBlocks[i].append(forecastTempElement);
+                            var forecastHumidityElement = document.createElement("p");
+                            forecastHumidityElement.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
+                            forecastBlocks[i].append(forecastHumidityElement);
+                        }
                     })
             })
     }
