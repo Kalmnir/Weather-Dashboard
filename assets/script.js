@@ -28,9 +28,11 @@ function initPage() {
                 var month = currentDate.getMonth() + 1;
                 var year = currentDate.getFullYear();
                 nameElement.innerHTML = data.name + "(" + month + "/" + day + "/" + year + ")";
+                let weatherPic = data.weather[0].icon;
+                currentPic.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
+                currentPic.setAttribute("alt", data.weather[0].description);
             })
     }
-
 
 
 
