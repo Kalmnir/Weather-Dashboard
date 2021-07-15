@@ -31,6 +31,24 @@ function initPage() {
                 let weatherPic = data.weather[0].icon;
                 currentPic.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
                 currentPic.setAttribute("alt", data.weather[0].description);
+                currentTemp.innerHTML = "Tempurature: " + tempFix(data.main.temp) + " &#176F";
+                currentHumidity.innerHTML = "Humidity:" + data.main.humidity + "%";
+                currentWind.innerHTML = "Wind Speed:" + data.wind.speed + "mph";
+                let lat = data.coord.lat;
+                let lon = data.coord.lon;
+                let uvQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&cnt=1";
+                fetch(uvQueryUrl)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        console.log(data)
+                        let uvIndex = document.createElement("span");
+                        uvIndex.setAttribute("class", "badge bg-danger");
+                        uvIndex.innerHTML = data.current.uvi;
+                        currentUV.innerhtml = "UV Index: ";
+                        currentUV.append(uvIndex);
+                    })
             })
     }
 
@@ -38,7 +56,9 @@ function initPage() {
 
 
 
-
+    function tempFix(K) {
+        return Math.floor((K - 273.15) * 1.8 + 32);
+    }
 
 
 
