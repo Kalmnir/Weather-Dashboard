@@ -12,7 +12,6 @@ var apiKey = "708187e40b564ddb4865c0cf80887413";
 let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
 function getWeather(cityName) {
-
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
     fetch(queryURL)
         .then(function (response) {
@@ -40,11 +39,10 @@ function getWeather(cityName) {
                 })
                 .then(function (data) {
                     console.log(data)
-                    let uvIndex = document.createElement("span");
-                    uvIndex.setAttribute("class", "badge bg-danger");
+                    let uvIndex = document.getElementById("uv-index-badge")
+                    uvIndex.classList.remove("hidden");
                     uvIndex.innerHTML = data.current.uvi;
-                    currentUV.innerhtml = "UV Index: ";
-                    currentUV.append(uvIndex);
+                    currentUV.innerHTML = ("UV Index: ")
                 });
 
             let cityID = data.name;
