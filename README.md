@@ -18,3 +18,4 @@ As such, I have made a useful little site that allows users to search for a city
  https://kalmnir.github.io/Weather-Dashboard/
  
  ##Screenshot of deployed site
+![Website screenshot](https://github.com/Kalmnir/Weather-Dashboard/blob/main/assets/screenshot/Weather_Search_Site.png)
