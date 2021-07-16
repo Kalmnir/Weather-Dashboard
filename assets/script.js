@@ -9,7 +9,7 @@ var currentWind = document.getElementById("wind-speed");
 var currentUV = document.getElementById("UV-index");
 var historyElement = document.getElementById("history");
 var apiKey = "708187e40b564ddb4865c0cf80887413";
-let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
 function getWeather(cityName) {
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
@@ -75,6 +75,9 @@ function getWeather(cityName) {
                         var forecastHumidityElement = document.createElement("p");
                         forecastHumidityElement.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
                         forecastBlocks[i].append(forecastHumidityElement);
+                        var forecastWindElement = document.createElement("p");
+                        forecastWindElement.innerHTML = "Wind Speed: " + data.list[forecastIndex].wind.speed + "mph";
+                        forecastBlocks[i].append(forecastWindElement);
                     }
                 })
         });
@@ -87,7 +90,7 @@ function tempFix(K) {
 clearBtn.addEventListener("click", function () {
     searchHistory = [];
     window.localStorage.clear();
-    renderSearchHistory();
+    historyElement.innerHTML = "";
 })
 
 searchInput.addEventListener("click", function () {
@@ -113,7 +116,7 @@ function renderSearchHistory() {
         historyItem.setAttribute("value", searchHistory[i]);
         historyItem.addEventListener("click", function (event) {
             event.preventDefault()
-            getWeather(historyItem.value);
+            getWeather(searchHistory[i]);
         })
         historyElement.append(historyItem);
     }
