@@ -1,3 +1,4 @@
+/* used once to hide an object on page load */
 .hidden {
     display: none;
 }

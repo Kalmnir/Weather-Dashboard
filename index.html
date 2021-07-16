@@ -14,11 +14,13 @@
 </head>
 
 <body>
+    <!-- header icon displaying the site title -->
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1 w-100 text-center">Weather Dashboard</span>
         </div>
     </nav>
+    <!-- bootsrap container housing all elements used set up in a grid format -->
     <div class="container">
         <div class="row">
             <div class="col-4 bg-light">
@@ -32,15 +34,18 @@
                         </button>
                     </div>
                 </div>
+                <!-- clear history icon gotten from font awesome -->
                 <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear history</button>
                 <form id="history"></form>
             </div>
+            <!-- current city box containing empty tags to fill in later using api data -->
             <div class="col-8">
                 <div class="row mr-0">
                     <div class="col-12 border border-dark m-3 rounded">
                         <div class="row">
                             <div class="col-12">
                                 <span id="city-name" class="city-name align-middle"></span>
+                                <!-- current pic for weather gotten from open weather map api -->
                                 <img id="current-pic" src="" alt="">
                             </div>
                         </div>
@@ -72,6 +77,7 @@
                         <h3>5-Day Forecast</h3>
                     </div>
                 </div>
+                <!-- empty containers to be used to house 5 day forecast -->
                 <div class="row">
                     <div class="col forecast bg-primary text-white ms-3 mb-3 rounded"></div>
                     <div class="col forecast bg-primary text-white ms-3 mb-3 rounded"></div>

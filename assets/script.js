@@ -1,3 +1,4 @@
+// globally declared variables
 var searchInput = document.getElementById("search-button");
 var cityInput = document.getElementById("city-input");
 var clearBtn = document.getElementById("clear-history");
@@ -11,6 +12,7 @@ var historyElement = document.getElementById("history");
 var apiKey = "708187e40b564ddb4865c0cf80887413";
 var searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
+// function calling open weather map api and using the data retrieved to insert needed information into current weather box
 function getWeather(cityName) {
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
     fetch(queryURL)
@@ -30,8 +32,10 @@ function getWeather(cityName) {
             currentTemp.innerHTML = "Tempurature: " + tempFix(data.main.temp) + " &#176F";
             currentHumidity.innerHTML = "Humidity:" + data.main.humidity + "%";
             currentWind.innerHTML = "Wind Speed:" + data.wind.speed + "mph";
+            // grabbing the lattitude and longitude from first api call to be used in second call to obtain UV index
             let lat = data.coord.lat;
             let lon = data.coord.lon;
+            // makes the required call and inserts data into empty spots on current city box, also un-hides badge icon used to show current UV index
             let uvQueryUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&cnt=1";
             fetch(uvQueryUrl)
                 .then(function (response) {
@@ -45,6 +49,7 @@ function getWeather(cityName) {
                     currentUV.innerHTML = ("UV Index: ")
                 });
 
+            // calls a third api to get data required for 5 day forecast
             let cityID = data.name;
             let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityID + "&appid=" + apiKey;
             fetch(forecastQueryURL)
@@ -53,6 +58,7 @@ function getWeather(cityName) {
                 })
                 .then(function (data) {
                     console.log(data)
+                    // grabs all my empty forecast blocks and appends data needed
                     var forecastBlocks = document.querySelectorAll(".forecast");
                     for (let i = 0; i < forecastBlocks.length; i++) {
                         forecastBlocks[i].innerHTML = "";
@@ -83,19 +89,23 @@ function getWeather(cityName) {
         });
 }
 
+// function used to convert tempurature from kelvin to farenheit
 function tempFix(K) {
     return Math.floor((K - 273.15) * 1.8 + 32);
 }
 
+// event listener set to clear out local history and empty saved cities inputs
 clearBtn.addEventListener("click", function () {
     searchHistory = [];
     window.localStorage.clear();
     historyElement.innerHTML = "";
 })
 
+// event listener set to take input of city name and call the getWeather function to obtain all data
 searchInput.addEventListener("click", function () {
     var searchTerm = cityInput.value;
     getWeather(searchTerm);
+    // pushes searched city into local storage and appends searched city onto the page as a read only input to be used to switch to searched cities in the future
     searchHistory.push(searchTerm);
     localStorage.setItem("search", JSON.stringify(searchHistory));
     var historyItem = document.createElement("input");
@@ -106,6 +116,7 @@ searchInput.addEventListener("click", function () {
     historyElement.append(historyItem);
 })
 
+// function set to render local storage saved cities onto the page on load and handle click event to make api call if one is clicked
 function renderSearchHistory() {
     history.innerHTML = "";
     for (let i = 0; i < searchHistory.length; i++) {
@@ -121,6 +132,8 @@ function renderSearchHistory() {
         historyElement.append(historyItem);
     }
 }
+
+// calling function outside of anything else to make sure searched cities show up on the page when loaded
 renderSearchHistory();
 if (searchHistory.length > 0) {
     getWeather(searchHistory[searchHistory.length - 1]);
